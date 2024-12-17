@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  title: Todolist API
+  version: 1.0.0
+  description: API de gestion des tâches pour une liste de tâches
+servers:
+  - url: http://localhost:5000
+
+paths:
+  /taches:
+    get:
+      summary: Récupère toutes les tâches
+      responses:
+        200:
+          description: Liste des tâches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tache'
+    post:
+      summary: Crée une nouvelle tâche
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tache'
+      responses:
+        200:
+          description: Tâche créée avec succès
+        400:
+          description: Erreur lors de la création de la tâche
+
+  /taches/{id}:
+    put:
+      summary: Met à jour une tâche
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la tâche
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tache'
+      responses:
+        200:
+          description: Tâche mise à jour avec succès
+        400:
+          description: Erreur lors de la mise à jour de la tâche
+    delete:
+      summary: Supprime une tâche
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la tâche
+      responses:
+        200:
+          description: Tâche supprimée avec succès
+        500:
+          description: Erreur lors de la suppression de la tâche
+
+components:
+  schemas:
+    Tache:
+      type: object
+      properties:
+        texte:
+          type: string
+          description: Texte de la tâche
+        terminee:
+          type: boolean
+          description: Statut de la tâche
+      required:
+        - texte
